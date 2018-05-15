@@ -1,0 +1,18 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Landing Page</h1>
+    <div class="col-8 posts">
+      <% @posts.each do |post| %>
+        <div class="post-item">
+          <%= link_to post do %>
+            <h3> <%= post.title %> </h3>
+          <% end %>
+          <div class="post-body">
+            <p>
+              <%= post.body[0...50]%>...
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+<br>

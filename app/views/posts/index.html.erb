@@ -1,0 +1,71 @@
+<p id="notice"><%= notice %></p>
+
+<h1 class="title-1">Listing Posts</h1>
+<div class="weather">Weather goes here</div>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>String</th>
+      <th>Body</th>
+      <th>Post length</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.title %></td>
+        <td><%= post.string %></td>
+        <td><%= post.body %></td>
+        <td><%= post.body.split.size %></td>
+        <td><%= link_to 'Show', post %></td>
+        <td><%= link_to 'Edit', edit_post_path(post) %></td>
+        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Post', new_post_path %>
+
+<script>
+  var title = $('.title-1');
+  title.text("Oh my god its a new title!");
+  title.css({color:"green", fontSize:"60px"});
+  title.on('click', changeElementColor);
+  
+  function changeElementColor(event){
+    $(this).css({color:getRandomColor(), fontSize:"60px", backgroundColor:getRandomColor()});
+  }  
+  
+  function getRandomColor(){
+    return "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);});
+  }
+</script>
+
+<script>
+  
+  navigator.geolocation.getCurrentPosition((location) => {
+    var latitude = location.coords.latitude;
+    var longitude = location.coords.longitude;
+    $.ajax({
+      url: 'api/v1/weather',
+      type: 'GET',
+      data: { lat: latitude, lng: longitude} ,
+      contentType: 'application/json; charset=utf-8',
+      success: function (response) {
+        var weather = $('.weather');
+        weather.text(response.currently.temperature + " and " + response.currently.summary);
+        console.log(response.currently);
+      },
+      error: function (error) {
+        console.log(error);
+      }
+    });
+  });
+</script>
